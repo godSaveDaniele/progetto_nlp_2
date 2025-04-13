@@ -395,6 +395,8 @@ class LatentCache:
         Print statistics (number of dead features, number of single token features)
         to the console.
         """
+
+        """
         assert self.width is not None, "Width must be set before generating statistics"
         print("Feature statistics:")
         # Token frequency
@@ -407,6 +409,7 @@ class LatentCache:
                 self.width,
                 verbose=True,
             )
+        """
 
     def save_config(self, save_dir: Path, cfg: CacheConfig, model_name: str):
         """
