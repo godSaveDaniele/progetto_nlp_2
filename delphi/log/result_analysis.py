@@ -280,7 +280,7 @@ def log_results(scores_path: Path, visualize_path: Path, target_modules: list[st
     )
     print(f"Number of dead features: {num_dead_features}")
 
-    plot_line(df, visualize_path)
+    #plot_line(df, visualize_path)
 
     for score_type in df["score_type"].unique():
         score_df = df.query(f"score_type == '{score_type}'")

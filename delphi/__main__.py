@@ -402,8 +402,8 @@ async def run(
             latent_range,
         )
 
-    #if run_cfg.verbose:
-        #log_results(scores_path, visualize_path, run_cfg.hookpoints)
+    if run_cfg.verbose:
+        log_results(scores_path, visualize_path, run_cfg.hookpoints)
 
 
 if __name__ == "__main__":
