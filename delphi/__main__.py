@@ -169,9 +169,12 @@ async def process_cache(
         )
 
     def explainer_postprocess(result):
-        with open(explanations_path / f"{result.record.latent}.txt", "wb") as f:
-            f.write(orjson.dumps(result.explanation))
-
+        with open(explanations_path / f"{result.record.latent}.txt", "w", encoding="utf-8") as f:
+            import json as _json
+            f.write(_json.dumps({
+                "explanation": result.explanation,
+                "prompt": result.prompt
+            }, ensure_ascii=False, indent=2))
         return result
 
     if run_cfg.constructor_cfg.non_activating_source == "FAISS":

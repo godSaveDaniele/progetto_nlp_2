@@ -20,6 +20,8 @@ class ExplainerResult(NamedTuple):
     explanation: str
     """Generated explanation for latent."""
 
+    prompt: str | None = None  # <--- AGGIUNTO
+
 
 @dataclass
 class Explainer(ABC):
@@ -52,7 +54,7 @@ class Explainer(ABC):
                 logger.info(f"Messages: {messages[-1]['content']}")
                 logger.info(f"Response: {response}")
 
-            return ExplainerResult(record=record, explanation=explanation)
+            return ExplainerResult(record=record, explanation=explanation, prompt=messages[-1]["content"]) # <-- Salvi il messaggio finale (il vero prompt))
         except Exception as e:
             logger.error(f"Explanation parsing failed: {repr(e)}")
             return ExplainerResult(

@@ -2,6 +2,7 @@ import asyncio
 from dataclasses import dataclass
 
 import torch
+import json as _json
 
 from delphi.explainers.default.prompts import SYSTEM_CONTRASTIVE
 from delphi.explainers.explainer import Explainer, ExplainerResult
@@ -59,16 +60,16 @@ class ContrastiveExplainer(Explainer):
                 from ..logger import logger
 
                 logger.info(f"Explanation: {explanation}")
-                logger.info(f"Messages: {messages[-1]['content']}")
+                logger.info(f"Messages: {messages}")
                 logger.info(f"Response: {response}")
 
-            return ExplainerResult(record=record, explanation=explanation)
+            return ExplainerResult(record=record, explanation=explanation, prompt=_json.dumps(messages, ensure_ascii=False, indent=2))
         except Exception as e:
             from ..logger import logger
 
             logger.error(f"Explanation parsing failed: {repr(e)}")
             return ExplainerResult(
-                record=record, explanation="Explanation could not be parsed."
+                record=record, explanation="Explanation could not be parsed.", prompt=_json.dumps(messages, ensure_ascii=False, indent=2)
             )
 
     def _build_prompt(  # type: ignore
