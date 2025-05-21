@@ -23,6 +23,15 @@ class ExplainerResult(NamedTuple):
     prompt: str | None = None  # <--- AGGIUNTO
 
 
+def messages_to_text_prompt(messages: list[dict]) -> str:
+    prompt_text = ""
+    for msg in messages:
+        role = msg["role"].upper()  # system/user/assistant in maiuscolo
+        content = msg["content"]
+        prompt_text += f"--- {role} ---\n{content}\n\n"  # Delimitatore visivo
+    return prompt_text.strip()  # Rimuove spaziature finali
+
+
 @dataclass
 class Explainer(ABC):
     """
@@ -54,12 +63,14 @@ class Explainer(ABC):
                 logger.info(f"Messages: {messages[-1]['content']}")
                 logger.info(f"Response: {response}")
 
-            return ExplainerResult(record=record, explanation=explanation, prompt=messages[-1]["content"]) # <-- Salvi il messaggio finale (il vero prompt))
+            return ExplainerResult(record=record, explanation=explanation, prompt =messages_to_text_prompt(messages)) # <-- Salvi il messaggio finale (il vero prompt))
         except Exception as e:
             logger.error(f"Explanation parsing failed: {repr(e)}")
             return ExplainerResult(
                 record=record, explanation="Explanation could not be parsed."
             )
+        
+
 
     def parse_explanation(self, text: str) -> str:
         try:
