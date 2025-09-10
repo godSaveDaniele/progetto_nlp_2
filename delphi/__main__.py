@@ -371,6 +371,15 @@ async def run(
         )
 
     del model, hookpoint_to_sparse_encode
+
+
+    # If cache-only mode is enabled, skip neighbours, explanations and scoring
+    if getattr(run_cfg, "cache_only", False):
+        if run_cfg.verbose:
+            print("cache_only is True: skipping neighbours, explanations, and scoring")
+        return
+
+    
     if run_cfg.constructor_cfg.non_activating_source == "neighbours":
         nrh = assert_type(
             list,

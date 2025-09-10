@@ -182,3 +182,7 @@ class RunConfig(Serializable):
 
     """List of run stages to recompute. This is a debugging tool
     and may be removed in the future."""
+
+    cache_only: bool = False
+    """If True, only populate the latent cache and exit (skip neighbours, explanations, and scoring)."""
+
