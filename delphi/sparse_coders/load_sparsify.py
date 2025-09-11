@@ -82,7 +82,14 @@ def load_sparsify_sparse_coders(
                 )
     else:
         # Load on CPU first to not run out of memory
-        sparse_models = SparseCoder.load_many(name, local=False, layers=hookpoints, device="cpu")
+        sparse_models = None
+        if (hookpoints == []):
+            sparse_models = SparseCoder.load_many(name, local=False, layers=hookpoints, device="cpu")
+        else:
+            print("Uploading SAE from Hugging Face")
+            sparse_models = {
+                hookpoints[0]: SparseCoder.load_from_hub(name, hookpoint=hookpoints[0], device="cpu")
+            }
         for hookpoint in hookpoints:
             sparse_model_dict[hookpoint] = sparse_models[hookpoint].to(device)
             if compile:
