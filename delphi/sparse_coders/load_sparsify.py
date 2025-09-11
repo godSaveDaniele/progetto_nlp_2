@@ -82,7 +82,7 @@ def load_sparsify_sparse_coders(
                 )
     else:
         # Load on CPU first to not run out of memory
-        sparse_models = SparseCoder.load_many(name, device="cpu")
+        sparse_models = SparseCoder.load_many(name, device="cpu", layers=hookpoints)
         for hookpoint in hookpoints:
             sparse_model_dict[hookpoint] = sparse_models[hookpoint].to(device)
             if compile:
