@@ -86,6 +86,8 @@ def load_sparsify_sparse_coders(
         if (hookpoints == []):
             sparse_models = SparseCoder.load_many(name, device="cpu") 
         else:
+            print("###############################")
+            print("Executing SparseCoder.load_from_disk with parameter: ",name_path/"layer.14.mlp")
             sparse_models = {
                 "layer.14.mlp": SparseCoder.load_from_disk(
                     name_path/"layer.14.mlp", device=device, decoder=False
