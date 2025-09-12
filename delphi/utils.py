@@ -19,8 +19,6 @@ def load_tokenized_data(
     from datasets import load_dataset
     from sparsify.data import chunk_and_tokenize
 
-    global tokens_ds
-
     data = load_dataset(dataset_repo, name=dataset_name, split=dataset_split, trust_remote_code=True)
     data = data.shuffle(seed)
     tokens_ds = chunk_and_tokenize(
@@ -29,6 +27,9 @@ def load_tokenized_data(
         max_seq_len=ctx_len,
         text_key=column_name,
     )
+
+    # Salva il dataset tokenizzato
+    tokens_ds.save_to_disk("dataset_tokenized")
 
     tokens = tokens_ds["input_ids"]
 
