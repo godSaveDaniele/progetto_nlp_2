@@ -28,14 +28,14 @@ def load_hooks_sparse_coders(
     """
 
     # Add SAE hooks to the model
-    if "gemma" not in run_cfg.sparse_model:
-        hookpoint_to_sparse_encode, transcode = load_sparsify_hooks(
-            model,
-            run_cfg.sparse_model,
-            run_cfg.hookpoints,
-            compile=compile,
-        )
-    else:
+    #if "gemma" not in run_cfg.sparse_model:
+    hookpoint_to_sparse_encode, transcode = load_sparsify_hooks(
+        model,
+        run_cfg.sparse_model,
+        run_cfg.hookpoints,
+        compile=compile,
+    )
+    """else:
         # model path will always be of the form google/gemma-scope-<size>-pt-<type>/
         # where <size> is the size of the model and <type> is either res or mlp
         model_path = "google/" + run_cfg.sparse_model.split("/")[1]
@@ -64,7 +64,7 @@ def load_hooks_sparse_coders(
             dtype=model.dtype,
             device=model.device,
         )
-        transcode = False
+        transcode = False"""
     # throw an error if the dictionary is empty
     if not hookpoint_to_sparse_encode:
         raise ValueError("No sparse coders loaded")
