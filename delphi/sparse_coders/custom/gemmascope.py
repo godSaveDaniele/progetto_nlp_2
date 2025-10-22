@@ -80,12 +80,18 @@ class JumpReluSae(nn.Module):
         self.b_dec = nn.Parameter(torch.zeros(d_model))
 
     def encode(self, input_acts):
+        # Ensure input_acts is on the same device as model parameters
+        if input_acts.device != self.W_enc.device:
+            input_acts = input_acts.to(self.W_enc.device)
         pre_acts = input_acts @ self.W_enc + self.b_enc
         mask = pre_acts > self.threshold
         acts = mask * torch.nn.functional.relu(pre_acts)
         return acts
 
     def decode(self, acts):
+        # Ensure acts is on the same device as model parameters
+        if acts.device != self.W_dec.device:
+            acts = acts.to(self.W_dec.device)
         return acts @ self.W_dec + self.b_dec
 
     def forward(self, acts):
@@ -104,6 +110,6 @@ class JumpReluSae(nn.Module):
         pt_params = {k: torch.from_numpy(v) for k, v in params.items()}
         model = cls(params["W_enc"].shape[0], params["W_enc"].shape[1])
         model.load_state_dict(pt_params)
-        if device == "cuda":
-            model.cuda()
+        # Move model to the specified device
+        model = model.to(device)
         return model
